@@ -4,14 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Font Awesome Icon -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- CSS Link -->
     <link rel="stylesheet" href="./styles.css">
-
 </head>
+
 <body>
+
+<main>
+<!--bootstrap spacing mt-2 & p-2 (m - for classes that set margin, t - for classes that set margin-top )(p - for classes that set padding) 2 set margin/padding to spacers -->
+    <div class="jumbotron container-fluid mt-2 text-center p-2" style="background-color: #00CCFF; color: whitesmoke;">
+        <h1><strong>Weather Dashboard</strong></h1>
+    </div>
+    <div class="container">
+        <!-- bootstrap columns create div city search -->
+        <div class="row">
+            <div class="col-sm-4 bg-light">
+                <!-- classes created for handling html inputs -->
+                <h4 class="area-1"><strong>Search City or Zip Code</strong></h4>
+                <!-- Form container for inputs & buttons -->
+                <form >
+                    <div class="input-group mb-3">
+                    <input type="text" class="form-control"id="search-city" aria-label="City Search" aria-describedby="search-button">
+                    <div class="input-group-append">
+                        <button class=" btn bg-primary text-light" id="search-button"><i class="fa fa-search"></i></button>
+                    </div>  
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- jQuery src links -->
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+<!-- Javascript File -->
 <script src="./app.js"></script>
 </body>
 </html>
