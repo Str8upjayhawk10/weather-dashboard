@@ -21,6 +21,7 @@
 <!--bootstrap spacing mt-2 & p-2 (m - for classes that set margin, t - for classes that set margin-top )(p - for classes that set padding) 2 set margin/padding to spacers -->
     <div class="jumbotron container-fluid mt-2 text-center p-2" style="background-color: #00CCFF; color: whitesmoke;">
         <h1><strong>Weather Dashboard</strong></h1>
+        <div class="date" style="font-size: 30px;"><strong>Wednesday Nov 4</strong></div>
     </div>
     <form >
     <div class="container">
@@ -28,7 +29,8 @@
         <div class="row">
             <div class="col-sm-4 bg-light">
                 <!-- classes created for handling html inputs -->
-                <h4 class="area-1"><strong>Search City or Zip Code</strong></h4>
+                <div class="city"><strong>Search City or Zip Code</strong></div>
+                
                 <!-- Form container for inputs & buttons -->
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" id="search-city" aria-label="City Search" aria-describedby="search-button">
@@ -42,10 +44,24 @@
                     <ul class="history-cache">
                         
                     </ul>
-                    
-                    
-                    
             </div>
+            <div class="col-sm-8">
+                <!-- margin left border dark rounded edges -->
+                <div class="row ml-2 border border-dark rounded">
+                    <div class="col-sm-12" id="current-weather">
+                        <!-- created  -->
+                        <h3 class="city-name" id="current-city"></h3> 
+                        <p>Temperature:<span class="current" id="temperature"></span></p>
+                        <p>Humidity:<span class="current" id="humidity"></span></p> 
+                        <p>Wind Speed:<span class="current" id="wind-speed"></span></p>
+                        <p>UV index:<span class="current bg-danger rounded py-2 px-2 text-white" id="uv-index"></span></p>    
+                    </div>
+
+                </div>
+            </div>
+                    
+                    
+                    
         </div>
         
     </form>
