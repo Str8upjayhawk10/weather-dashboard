@@ -1,13 +1,5 @@
-// Declare variable for cache of city search
-$(document).ready(function() {
-    //attach data to id's of html
-var searchCity = $("#search-city");
-var searchButton = $("#search-button");
 
-
-
-
-    function getWeather(){
+function getWeather(){
     var searchCity = $("#search-city").val()
 
     fetch("https://api.openweathermap.org/data/2.5/weather?q="+searchCity+"&appid=09a1c197a194673136ea1b9c9a4cc663&units=imperial")
@@ -15,6 +7,7 @@ var searchButton = $("#search-button");
         return response.json()
     }).then(function(data){
         console.log(data)
+        //attach data to id's of html
         
         //call UVIndex
         //call 5day forcast
@@ -32,5 +25,3 @@ var searchButton = $("#search-button");
 
 
 $("#search-button").click(getWeather)
-        
-})
