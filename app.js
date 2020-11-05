@@ -11,7 +11,9 @@ window.addEventListener('load', () => {
             // access position
     long = position.coords.longitude;
     lat = position.coords.latitude;  
-        });
+
+    const api = "https://api.openweathermap.org/data/2.5/weather?q=" + searchCity + "&appid=09a1c197a194673136ea1b9c9a4cc663&units=imperial" 
+    });
     }
 
 
