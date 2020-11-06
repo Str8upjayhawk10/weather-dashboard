@@ -35,7 +35,13 @@ function currentWeather(searchCity){
     .then(function(response){
         return response.json()
     }).then(function(data){
+        // console.log data to display weather coord:{...} within console.log window
         console.log(data)
+        let weatherIcon = data.weather[0].icon;
+        // got weather icon png from openweathermap.org
+        let iconUrl ='https://openweathermap.org/img/wn/'+weatherIcon +'@2x.png';
+        // getDate()method found on mozilla/stackover flow
+        let date = newDate(data.dt*1000).toLocalDateString();
     });
 }
 // Created a function to load 
