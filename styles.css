@@ -11,5 +11,11 @@ body {
 span {
     font-size: 1rem;
 }
-
+.city {
+    padding-top: 20px;
+    margin-bottom: 20px;
+}
+#clear-history {
+    margin-top: 30px;
+}
 
