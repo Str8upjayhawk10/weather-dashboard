@@ -11,7 +11,7 @@ let currentWindSpeed = $('#wind-speed');
 let currentUvIndex = $('#uv-index');
 let cityEl = [];
 // four loop to search if cities exist within storage
-function find (c) {
+function searchCities(c) {
     for (var i = 0; i < cityEl.length; i++) {
         if(c.toUpperCase()=== cityEl[i]){
             return -1;
@@ -22,4 +22,37 @@ function find (c) {
 // Created API Key
 const APIKey = '09a1c197a194673136ea1b9c9a4cc663';
 // Display the current and future weather grabbing from city input text box
+function displayWeather(event){
+    event.preventDefault();
+    if(searchCity.val().trim()!==""){
+        city = searchCity.val().trim();
+        currentWeather(city);
+    }
+}
+// Create fetch to call
+function currentWeather(searchCity){
+    fetch("https://api.openweathermap.org/data/2.5/weather?q="+ searchCity +"&appid=" + APIKey)
+    .then(function(response){
+        return response.json()
+    }).then(function(data){
+        console.log(data)
+    });
+}
+// Created a function to load 
+function loadlastCity(){
+    $("ul").empty();
+    var cityEl = JSON.parse(localStorage.getItem("cityname"));
+    if(cityEl!==null){
+        cityEl=JSON.parse(localStorage.getItem("cityname"));
+        for(i=0; i<cityEl.length;i++){
+            addToList(cityEl[i]);
+        }
+        city=cityEl[i-1];
+        currentWeather(city);
+    }
 
+}
+// add on click listner
+$("#search-button").on("click",displayWeather);
+// process load event when give resources has loaded
+$(window).on("load",loadlastCity);
