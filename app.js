@@ -1,12 +1,13 @@
 // Declared a varible to cache city search html line:24
 let city = '';
+let date = 'newDate';
 // Create a varible declaration
 let searchCity = $('#search-city');
 let searchButton = $('#search-button');
 let clearButton = $('#clear-history');
 let currentCity = $('#current-city');
 let currentTemperature = $('#temperature');
-let currentHumidity = $('humidity');
+let currentHumidity = $('#humidity');
 let currentWindSpeed = $('#wind-speed');
 let currentUvIndex = $('#uv-index');
 let cityEl = [];
@@ -39,17 +40,58 @@ function currentWeather(searchCity){
         console.log(data)
         let weatherIcon = data.weather[0].icon;
         // got weather icon png from openweathermap.org
-        let iconUrl ='https://openweathermap.org/img/wn/'+weatherIcon +'@2x.png';
+        let iconUrl =('https://openweathermap.org/img/wn/'+ weatherIcon +'@2x.png');
         // getDate()method found on mozilla/stackover flow
-        let date = newDate(data.dt*1000).toLocalDateString();
+        // let date =newDate(data.dt*1000).toLocalDateString();ask tutor
+        // parse response for name of city concatenate city date and icon
+        $('#current-city').html(data.name +'('+date+')' + '<img src='+iconUrl+'>');
+        // display current temp convert temp to fahrenheit
+        let tempF = (data.main.temp - 273.15) * 1.80 + 32;
+        $('#temperature').html((tempF).toFixed(2)+'&#8457');
+        // display humidity
+        $('#humidity').html(data.main.humidity+'%');
+        //Display Wind speed and convert to MPH
+        let ws=data.wind.speed;
+        let windsmph=(ws*2.237).toFixed(1);
+        $('#wind-speed').html(windsmph+'MPH');
+        // display windspeed and convert miles per hour
+        // currentUvIndex(data.coord.lon,data.coord.lat); ask tutor!!!!
+        forecast(data.id);
+        if(data.cod==200){
+            cityEl=JSON.parse(localStorage.getItem('cityname'));
+            console.log(cityEl);
+            if (cityEl==null){
+                cityEl=[];
+                cityEl.push(city.toUpperCase()
+                );
+                localStorage.setItem('cityname',JSON.stringify(cityEl));
+                addToList(city);
+            }
+            else {
+                if(find(city)>0){
+                    cityEl.push(city.toUpperCase());
+                    localStorage.setItem('cityname',JSON.stringify(cityEl));
+                    addToList(city);
+                }
+            }
+        }
     });
+}
+// Create function to return uvIndex data
+function uvIndex(lat, lon) {
+    fetch('https://api.openweathermap.org/data/2.5/uvi?appid='+ APIKey + '&lat=' +lat+'&lon='+lon);
+    $('#uv-index').then(function(response){
+        return response.json()
+    }).then(function(data){
+        $('#uv-index').html(data.value);
+})
 }
 // Created a function to load 
 function loadlastCity(){
-    $("ul").empty();
-    var cityEl = JSON.parse(localStorage.getItem("cityname"));
+    $('ul').empty();
+    var cityEl = JSON.parse(localStorage.getItem('cityname'));
     if(cityEl!==null){
-        cityEl=JSON.parse(localStorage.getItem("cityname"));
+        cityEl=JSON.parse(localStorage.getItem('cityname'));
         for(i=0; i<cityEl.length;i++){
             addToList(cityEl[i]);
         }
@@ -58,7 +100,53 @@ function loadlastCity(){
     }
 
 }
+//Clear the search history from the page
+function clearHistory(event){
+    event.preventDefault();
+    cityEl=[];
+    localStorage.removeItem('cityname');
+    document.location.reload();
+
+}
+function invokePastSearch(event){
+    var liEl=event.target;
+    if (event.target.matches('li')){
+        city=liEl.textContent.trim();
+        currentWeather(city);
+    }
+
+}
+function forecast(cityId){
+    let dayOver = false;
+    fetch('https://api.openweathermap.org/data/2.5/forecast?id='+ cityId + '&appid='+APIKey);
+    cityId.then(function(response){ 
+        return response.json()
+    }).then(function(data){
+        for (i=0;i<5;i++){
+            let date= new Date((data.list[((i+1)*8)-1].dt)*1000).toLocaleDateString();
+            let iconcode= data.list[((i+1)*8)-1].weather[0].icon;
+            let iconUrl=('https://openweathermap.org/img/wn/'+iconcode+'.png');
+            let tempK= data.list[((i+1)*8)-1].main.temp;
+            let tempF=(((tempK-273.5)*1.80)+32).toFixed(2);
+            let humidity= data.list[((i+1)*8)-1].main.humidity;
+        
+            $('#iDate'+i).html(date);
+            $('#iImg'+i).html('<img src='+iconUrl+'>');
+            $('#iTemp'+i).html(tempF+'&#8457');
+            $('#iHumidity'+i).html(humidity+'%');
+        }
+})
+}
+function addToList(c){
+    var listEl= $('<li>'+c.toUpperCase()+'</li>');
+    $(listEl).attr('class','list-group-item');
+    $(listEl).attr('data-value',c.toUpperCase());
+    $('.history-cache').append(listEl);
+}
+
 // add on click listner
-$("#search-button").on("click",displayWeather);
+$('#search-button').on('click',displayWeather);
 // process load event when give resources has loaded
-$(window).on("load",loadlastCity);
+$(window).on('load',loadlastCity);
+$(document).on('click',invokePastSearch);
+$('#clear-history').on('click',clearHistory);
