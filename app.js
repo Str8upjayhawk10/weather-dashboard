@@ -42,7 +42,8 @@ function currentWeather(searchCity){
         // got weather icon png from openweathermap.org
         let iconUrl =('https://openweathermap.org/img/wn/'+ weatherIcon +'@2x.png');
         // getDate()method found on mozilla/stackover flow
-        // let date =newDate(data.dt*1000).toLocalDateString();ask tutor
+        let date = (new Date(data.dt*1000)).toLocaleDateString();
+
         // parse response for name of city concatenate city date and icon
         $('#current-city').html(data.name +'('+date+')' + '<img src='+iconUrl+'>');
         // display current temp convert temp to fahrenheit
@@ -55,7 +56,7 @@ function currentWeather(searchCity){
         let windsmph=(ws*2.237).toFixed(1);
         $('#wind-speed').html(windsmph+'MPH');
         // display windspeed and convert miles per hour
-        // currentUvIndex(data.coord.lon,data.coord.lat); ask tutor!!!!
+        getUvIndex(data.coord.lat,data.coord.lon); 
         forecast(data.id);
         if(data.cod==200){
             cityEl=JSON.parse(localStorage.getItem('cityname'));
@@ -78,9 +79,10 @@ function currentWeather(searchCity){
     });
 }
 // Create function to return uvIndex data
-function uvIndex(lat, lon) {
-    fetch('https://api.openweathermap.org/data/2.5/uvi?appid='+ APIKey + '&lat=' +lat+'&lon='+lon);
-    $('#uv-index').then(function(response){
+function getUvIndex(lat, lon) {
+    fetch('https://api.openweathermap.org/data/2.5/uvi?appid='+ APIKey + '&lat=' +lat+'&lon='+lon)
+    // $('#uv-index')
+    .then(function(response){
         return response.json()
     }).then(function(data){
         $('#uv-index').html(data.value);
@@ -118,13 +120,13 @@ function invokePastSearch(event){
 }
 function forecast(cityId){
     let dayOver = false;
-    fetch('https://api.openweathermap.org/data/2.5/forecast?id='+ cityId + '&appid='+APIKey);
-    cityId.then(function(response){ 
+    fetch('https://api.openweathermap.org/data/2.5/forecast?id='+ cityId + '&appid='+APIKey)
+    .then(function(response){ 
         return response.json()
     }).then(function(data){
         for (i=0;i<5;i++){
-            let date= new Date((data.list[((i+1)*8)-1].dt)*1000).toLocaleDateString();
-            let iconcode= data.list[((i+1)*8)-1].weather[0].icon;
+            let date = new Date((data.list[((i+1)*8)-1].dt)*1000).toLocaleDateString();
+            let iconcode = data.list[((i+1)*8)-1].weather[0].icon;
             let iconUrl=('https://openweathermap.org/img/wn/'+iconcode+'.png');
             let tempK= data.list[((i+1)*8)-1].main.temp;
             let tempF=(((tempK-273.5)*1.80)+32).toFixed(2);
